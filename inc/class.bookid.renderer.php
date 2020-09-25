@@ -51,7 +51,7 @@ class BookID_Renderer {
 
 		// Load JS
     $js_path = plugins_url('js/bookid_handling.js', dirname(__FILE__));
-    $content = "<script src='$js_path' async></script>";
+    $content = "<script src='$js_path'></script>";
 		$content .= "<script>const bookidAjaxurl = '" . admin_url( 'admin-ajax.php' ) . "'</script>";
 
 
