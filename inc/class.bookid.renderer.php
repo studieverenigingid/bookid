@@ -101,7 +101,7 @@ class BookID_Renderer {
 
       if ($registered) {
 				// If the user already has a booking, render a cancel button
-        $content .= "<p>You’ve booked a spot for $registered. See you then, make sure you’re on time!</p>";
+        $content .= "<p>You’ve booked a table for $registered. See you then, make sure you’re on time!</p>";
         $content .= $this->build_button('cancel-booking', 'Cancel booking', array(
           'post' => get_the_ID(),
           'timeslot' => $slot['begin_time'],
@@ -111,7 +111,7 @@ class BookID_Renderer {
         $content .= "<div style='columns: 2;'>";
         foreach ($timeslots as $key => $slot) {
           $content .= "<div style='break-inside: avoid; overflow: hidden;'>";
-          $button_text = 'Book a spot for ' . $slot['begin'] . '–' . $slot['end'];
+          $button_text = 'Book a table for ' . $slot['begin'] . '–' . $slot['end'];
           $content .= $this->build_button('add-booking', $button_text, array(
             'post' => get_the_ID(),
             'timeslot' => $slot['begin'],
