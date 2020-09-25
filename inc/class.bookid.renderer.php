@@ -97,17 +97,22 @@ class BookID_Renderer {
         $slot = get_sub_field('timeslot');
         $timeslots[$slot]['available']--;
         if (get_sub_field('member') == $user_id) $registered = $slot;
+				$guests = esc_html(get_sub_field('guests'));
       endwhile; endif;
 
       if ($registered) {
 				// If the user already has a booking, render a cancel button
-        $content .= "<p>You’ve booked a table for $registered. See you then, make sure you’re on time!</p>";
+        $content .= "<p>You’ve booked a table for $registered with $guests. See you then, make sure you’re on time!</p>";
         $content .= $this->build_button('cancel-booking', 'Cancel booking', array(
           'post' => get_the_ID(),
           'timeslot' => $slot['begin_time'],
         ) );
       } else {
 				// If the user doesn’t have a booking, allow them to get a spot
+				$content .= "<style>.login__label{color: #444;}.login__input{border-color: #444; color: #444;}.login__input::placeholder{color: #777;}</style>";
+				$content .= "<form action='#'>";
+				$content .= "<p><label for='guests' class='login__label'>Who are you bringing? (3 names)</label>";
+				$content .= "<input name='guests' id='guests' type='text' placeholder='Jamie, Sam, Charlie' class='login__input' required></p>";
         $content .= "<div style='columns: 2;'>";
         foreach ($timeslots as $key => $slot) {
           $content .= "<div style='break-inside: avoid; overflow: hidden;'>";
@@ -119,7 +124,7 @@ class BookID_Renderer {
           $content .= "<p>Available: " . $slot['available'] . "</p>";
           $content .= "</div>";
         }
-        $content .= "</div>";
+        $content .= "</div></form>";
       }
 
     endwhile; else:

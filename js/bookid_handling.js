@@ -17,10 +17,16 @@ function sendXhr(params) {
  * @param event [Event] click event
  */
 function addBooking(event) {
-  let params = "?action=bookid_add" +
-    "&post=" + event.target.dataset.post +
-    "&timeslot=" + event.target.dataset.timeslot;
-  sendXhr(params);
+  event.preventDefault();
+  if (document.getElementById('guests').checkValidity()) {
+    let params = "?action=bookid_add" +
+      "&post=" + event.target.dataset.post +
+      "&timeslot=" + event.target.dataset.timeslot +
+      "&guests=" + document.getElementById('guests').value;
+    sendXhr(params);
+  } else {
+    alert("Please let us know who’s joining you!");
+  }
 }
 
 /**

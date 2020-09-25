@@ -40,6 +40,7 @@ class BookID_Ajax {
       'member' => $user_ID,
 			'member_name' => $user_obj->display_name,
       'timeslot' => $_GET['timeslot'],
+			'guests' => esc_html($_GET['guests']),
     );
     $adding = add_row('bookings', $booking, $post_ID);
     wp_send_json(array( 'success' => $adding ));
