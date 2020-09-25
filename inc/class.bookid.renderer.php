@@ -5,6 +5,29 @@
  */
 class BookID_Renderer {
 
+	protected $styling = "
+		.login__label {
+			color: #444;
+		}
+		.login__input {
+			border-color: #444;
+			color: #444;
+		}
+		.login__input::placeholder {
+			color: #777;
+		}
+		@media (min-width: 500px) {
+			.timeslots {
+				columns: 2;
+			}
+		}
+		.timeslots__slot {
+			break-inside: avoid;
+			overflow: hidden;
+			text-align: center;
+		}
+	";
+
 	public function __construct() {
 	}
 
@@ -109,13 +132,16 @@ class BookID_Renderer {
         ) );
       } else {
 				// If the user doesn’t have a booking, allow them to get a spot
-				$content .= "<style>.login__label{color: #444;}.login__input{border-color: #444; color: #444;}.login__input::placeholder{color: #777;}</style>";
+				$content .= "<style>$this->styling</style>";
 				$content .= "<form action='#'>";
-				$content .= "<p><label for='guests' class='login__label'>Who are you bringing? (3 names)</label>";
-				$content .= "<input name='guests' id='guests' type='text' placeholder='Jamie, Sam, Charlie' class='login__input' required></p>";
-        $content .= "<div style='columns: 2;'>";
+				$content .= "<p><label for='guests' class='login__label'>
+					Who are you bringing? (3 names)</label>";
+				$content .= "<input name='guests' id='guests' type='text'
+					placeholder='Jamie, Sam, Charlie' class='login__input' required></p>";
+
+        $content .= "<div class='timeslots'>";
         foreach ($timeslots as $key => $slot) {
-          $content .= "<div style='break-inside: avoid; overflow: hidden;'>";
+          $content .= "<div class='timeslots__slot'>";
           $button_text = 'Book a table for ' . $slot['begin'] . '–' . $slot['end'];
           $content .= $this->build_button('add-booking', $button_text, array(
             'post' => get_the_ID(),
