@@ -115,11 +115,11 @@ class BookID_Renderer {
 
 			// Walk through bookings, check if current user has one and update
 			// timeslots’ capacity/availability
-      $user_id = get_current_user_id();
+      $user_ID = get_current_user_id();
       if ( have_rows('bookings') ): while ( have_rows('bookings') ): the_row();
         $slot = get_sub_field('timeslot');
         $timeslots[$slot]['available']--;
-        if (get_sub_field('member') == $user_id) $registered = $slot;
+        if (get_sub_field('member') == $user_ID) $registered = $slot;
 				$guests = esc_html(get_sub_field('guests'));
       endwhile; endif;
 
