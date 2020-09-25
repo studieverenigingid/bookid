@@ -133,7 +133,7 @@ class BookID_Renderer {
       } else {
 				// If the user doesn’t have a booking, allow them to get a spot
 				$content .= "<style>$this->styling</style>";
-				$content .= "<form action='#'>";
+				$content .= "<form action='#' id='bookid-form'>";
 				$content .= "<p><label for='guests' class='login__label'>
 					Who are you bringing? (3 names)</label>";
 				$content .= "<input name='guests' id='guests' type='text'

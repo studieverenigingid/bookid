@@ -43,14 +43,37 @@ function cancelBooking(event) {
  * Reload page because the booking was successful
  */
 function handleLoadend(e) {
-  window.location.reload(false);
+  if (e.target.response.success) {
+    window.location.reload(false);
+  } else {
+    let error = "";
+    switch (e.target.response.problem) {
+      case 'consecutive':
+        error = "To make sure as many people as possible are able to visit ID Kafee, you can’t book two consecutive weeks. Sorry!";
+        break;
+      default:
+        console.log('unknown error');
+    }
+    showError(error);
+  }
 }
 
 /**
  * Alert the user that something went wrong
  */
 function handleError(e) {
-  alert("Sorry, something went wrong. Please try again. If this keeps happening, please email us at svid@tudelft.nl");
+  showError("Sorry, something went wrong. Please try again. If this keeps happening, please email us at svid@tudelft.nl");
+}
+
+/**
+ * Render an error message for the user
+ * @param message [string] the error message to show
+ */
+function showError(message) {
+  let errorEl = document.createElement('div');
+  errorEl.classList.add('contact-form__message', 'contact-form__message--failed');
+  errorEl.innerHTML = message;
+  document.getElementById('bookid-form').appendChild(errorEl);
 }
 
 /**
