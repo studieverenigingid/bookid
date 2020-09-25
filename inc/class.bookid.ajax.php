@@ -35,8 +35,10 @@ class BookID_Ajax {
   public function add_booking() {
     $post_ID = $_GET['post'];
     $user_ID = get_current_user_id();
+		$user_obj = get_userdata($user_ID);
     $booking = array(
       'member' => $user_ID,
+			'member_name' => $user_obj->display_name,
       'timeslot' => $_GET['timeslot'],
     );
     $adding = add_row('bookings', $booking, $post_ID);

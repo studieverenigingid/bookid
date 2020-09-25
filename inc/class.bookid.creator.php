@@ -173,7 +173,7 @@ class BookID_Creator {
       			'sub_fields' => array(
       				array(
       					'key' => 'field_5f65bc0819ec0',
-      					'label' => 'Member',
+      					'label' => 'Member ID',
       					'name' => 'member',
       					'type' => 'user',
       					'instructions' => '',
@@ -189,6 +189,25 @@ class BookID_Creator {
       					'multiple' => 0,
       					'return_format' => 'id',
       				),
+							array(
+								'key' => 'field_5f6ddc1814ac7',
+								'label' => 'Member name',
+								'name' => 'member_name',
+								'type' => 'text',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'default_value' => '',
+								'placeholder' => '',
+								'prepend' => '',
+								'append' => '',
+								'maxlength' => '',
+							),
       				array(
       					'key' => 'field_5f65bc2c19ec1',
       					'label' => 'Timeslot',
