@@ -135,9 +135,9 @@ class BookID_Renderer {
 				$content .= "<style>$this->styling</style>";
 				$content .= "<form action='#' id='bookid-form'>";
 				$content .= "<p><label for='guests' class='login__label'>
-					Who are you bringing? (3 names)</label>";
+					Who are you bringing? (2 names)</label>";
 				$content .= "<input name='guests' id='guests' type='text'
-					placeholder='Jamie, Sam, Charlie' class='login__input' required></p>";
+					placeholder='Jamie & Sam' class='login__input' required></p>";
 
         $content .= "<div class='timeslots'>";
         foreach ($timeslots as $key => $slot) {
