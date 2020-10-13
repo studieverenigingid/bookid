@@ -141,13 +141,17 @@ class BookID_Renderer {
 
         $content .= "<div class='timeslots'>";
         foreach ($timeslots as $key => $slot) {
-          $content .= "<div class='timeslots__slot'>";
-          $button_text = 'Book a table for ' . $slot['begin'] . '–' . $slot['end'];
-          $content .= $this->build_button('add-booking', $button_text, array(
-            'post' => get_the_ID(),
-            'timeslot' => $slot['begin'],
-          ));
-          $content .= "<p>Available: " . $slot['available'] . "</p>";
+					$content .= "<div class='timeslots__slot'>";
+					if ($slot['available'] < 1) {
+						$content .= $slot['begin'] . '–' . $slot['end'] . ' is fully booked.';
+					} else {
+						$button_text = 'Book a table for ' . $slot['begin'] . '–' . $slot['end'];
+	          $content .= $this->build_button('add-booking', $button_text, array(
+	            'post' => get_the_ID(),
+	            'timeslot' => $slot['begin'],
+	          ));
+	          $content .= "<p>Available: " . $slot['available'] . "</p>";
+					}
           $content .= "</div>";
         }
         $content .= "</div></form>";
