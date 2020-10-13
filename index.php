@@ -4,7 +4,7 @@ Plugin Name: BookID
 Plugin URI: https://svid.nl
 Description: Wordpress plugin which allows the creation of bookable events with timeslots.
 Author: Floris Jansen
-Version: 0.1
+Version: 0.1.2
 Author URI: https://fmjansen.nl
 */
 
