@@ -69,11 +69,12 @@ class BookID_Ajax {
 		$post_ID = $_GET['post'];
     $user_ID = get_current_user_id();
 		$user_obj = get_userdata($user_ID);
+		$guests = (empty($_GET['guests'])) ? '' : esc_html($_GET['guests']);
     $booking = array(
       'member' => $user_ID,
 			'member_name' => $user_obj->display_name,
       'timeslot' => $_GET['timeslot'],
-			'guests' => esc_html($_GET['guests']),
+			'guests' => $guests,
     );
     $adding = add_row('bookings', $booking, $post_ID);
 		return $adding;

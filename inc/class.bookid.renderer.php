@@ -154,10 +154,14 @@ class BookID_Renderer {
 				// If the user doesn’t have a booking, allow them to get a spot
 				$content .= "<style>$this->styling</style>";
 				$content .= "<form action='#' id='bookid-form'>";
-				$content .= "<p><label for='guests' class='login__label'>
-					Who are you bringing? (2 names)</label>";
-				$content .= "<input name='guests' id='guests' type='text'
-					placeholder='Jamie & Sam' class='login__input' required></p>";
+
+				// Is this for a Kafee?
+				if (strpos( strtolower($title), 'kafee' )): // yes, so ask who they’re brining
+					$content .= "<p><label for='guests' class='login__label'>
+						Who are you bringing? (2 names)</label>";
+					$content .= "<input name='guests' id='guests' type='text'
+						placeholder='Jamie & Sam' class='login__input' required></p>";
+				endif;
 
         $content .= "<div class='timeslots'>";
         foreach ($timeslots as $key => $slot) {

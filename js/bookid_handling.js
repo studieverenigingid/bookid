@@ -18,14 +18,22 @@ function sendXhr(params) {
  */
 function addBooking(event) {
   event.preventDefault();
-  if (document.getElementById('guests').checkValidity()) {
-    let params = "?action=bookid_add" +
-      "&post=" + event.target.dataset.post +
-      "&timeslot=" + event.target.dataset.timeslot +
-      "&guests=" + document.getElementById('guests').value;
+  let params = "?action=bookid_add" +
+    "&post=" + event.target.dataset.post +
+    "&timeslot=" + event.target.dataset.timeslot;
+
+  let allGood = true;
+  if (document.getElementById('guests') !== null) {
+    if (!document.getElementById('guests').checkValidity()) {
+      alert("Please let us know who’s joining you!");
+      allGood = false;
+    } else {
+      params += "&guests=" + document.getElementById('guests').value;
+    }
+  }
+
+  if (allGood) {
     sendXhr(params);
-  } else {
-    alert("Please let us know who’s joining you!");
   }
 }
 
