@@ -141,11 +141,12 @@ class BookID_Renderer {
         $timeslots[$slot]['available']--;
         if (get_sub_field('member') == $user_ID) $registered = $slot;
 				$guests = esc_html(get_sub_field('guests'));
+				if (!empty($guests)) $guests = 'with ' . $guests;
       endwhile; endif;
 
       if ($registered) {
 				// If the user already has a booking, render a cancel button
-        $content .= "<p>You’ve booked a table for $registered with $guests. See you then, make sure you’re on time!</p>";
+        $content .= "<p>You’ve booked the $registered timeslot$guests. See you then, make sure you’re on time!</p>";
         $content .= $this->build_button('cancel-booking', 'Cancel booking', array(
           'post' => get_the_ID(),
           'timeslot' => $slot['begin_time'],
@@ -169,7 +170,7 @@ class BookID_Renderer {
 					if ($slot['available'] < 1) {
 						$content .= $slot['begin'] . '–' . $slot['end'] . ' is fully booked.';
 					} else {
-						$button_text = 'Book a table for ' . $slot['begin'] . '–' . $slot['end'];
+						$button_text = 'Book timeslot ' . $slot['begin'] . '–' . $slot['end'];
 	          $content .= $this->build_button('add-booking', $button_text, array(
 	            'post' => get_the_ID(),
 	            'timeslot' => $slot['begin'],
@@ -183,7 +184,7 @@ class BookID_Renderer {
 
     endwhile; else:
 			// Handle a lack of upcoming events
-      $content .= "<p>There are no upcoming Kafees you can book a table for. $this->post_type</p>";
+      $content .= "<p>There are no upcoming events you can book a timeslot for. $this->post_type</p>";
     endif;
 
     wp_reset_query();
