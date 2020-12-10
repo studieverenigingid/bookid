@@ -65,7 +65,10 @@ class BookID_Renderer {
 	 * Register the shortcodes
 	 * @return string the timeslot HTML
 	 */
-	public function timeslot_renderer() {
+	public function timeslot_renderer($atts) {
+
+		if ($atts !== '')
+			$bookable_event_id = (int)$atts['id'];
 
 		// If user is not logged in, show a login button
     if (!is_user_logged_in()) {
@@ -80,23 +83,40 @@ class BookID_Renderer {
 
     $registered = false;
 
-		// Load nearest bookable event
-    $today = date('Ymd');
-    $bookables_loop = new WP_Query( array(
-      'post_type' => 'bookable',
-      'posts_per_page' => 1,
-      'meta_query' => array(
-      	array(
-      	  'key'     => 'date',
-      	  'compare' => '>=',
-      	  'value'   => $today,
-      	  'type'    => 'DATE'
-      	),
-      ),
-      'orderby' => 'meta_value',
-      'meta_key' => 'date',
-      'order' => 'ASC',
-    ) );
+		// Is this for a specific event?
+		$today = date('Ymd');
+		if ($bookable_event_id): // yes
+	    $bookables_loop = new WP_Query( array(
+	      'post_type' => 'bookable',
+	      'p' => $bookable_event_id,
+				'meta_query' => array(
+	      	array(
+	      	  'key'     => 'date',
+	      	  'compare' => '>=',
+	      	  'value'   => $today,
+	      	  'type'    => 'DATE'
+	      	),
+	      ),
+	    ) );
+		// Is this for a specific event?
+		else: // no
+			// Load nearest bookable event
+	    $bookables_loop = new WP_Query( array(
+	      'post_type' => 'bookable',
+	      'posts_per_page' => 1,
+	      'meta_query' => array(
+	      	array(
+	      	  'key'     => 'date',
+	      	  'compare' => '>=',
+	      	  'value'   => $today,
+	      	  'type'    => 'DATE'
+	      	),
+	      ),
+	      'orderby' => 'meta_value',
+	      'meta_key' => 'date',
+	      'order' => 'ASC',
+	    ) );
+		endif;
     if ($bookables_loop->have_posts()) : while($bookables_loop->have_posts()) :
       $bookables_loop->the_post();
 
