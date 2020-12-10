@@ -82,7 +82,7 @@ function handleError(e) {
  */
 function showError(message) {
   let errorEl = document.createElement('div');
-  errorEl.classList.add('contact-form__message', 'contact-form__message--failed');
+  errorEl.classList.add('notification', 'notification--failed');
   errorEl.innerHTML = message;
   document.getElementById('bookid-form').appendChild(errorEl);
 }
