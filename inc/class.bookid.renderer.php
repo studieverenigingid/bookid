@@ -149,7 +149,7 @@ class BookID_Renderer {
         $content .= "<p>You’ve booked the $registered timeslot$guests. See you then, make sure you’re on time!</p>";
         $content .= $this->build_button('cancel-booking', 'Cancel booking', array(
           'post' => get_the_ID(),
-          'timeslot' => $slot['begin_time'],
+          'timeslot' => $slot,
         ) );
       } else {
 				// If the user doesn’t have a booking, allow them to get a spot
