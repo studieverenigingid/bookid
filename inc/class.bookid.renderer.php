@@ -65,7 +65,10 @@ class BookID_Renderer {
 	 * Register the shortcodes
 	 * @return string the timeslot HTML
 	 */
-	public function timeslot_renderer() {
+	public function timeslot_renderer($atts) {
+
+		if ($atts !== '')
+			$bookable_event_id = (int)$atts['id'];
 
 		// If user is not logged in, show a login button
     if (!is_user_logged_in()) {
@@ -80,23 +83,40 @@ class BookID_Renderer {
 
     $registered = false;
 
-		// Load nearest bookable event
-    $today = date('Ymd');
-    $bookables_loop = new WP_Query( array(
-      'post_type' => 'bookable',
-      'posts_per_page' => 1,
-      'meta_query' => array(
-      	array(
-      	  'key'     => 'date',
-      	  'compare' => '>=',
-      	  'value'   => $today,
-      	  'type'    => 'DATE'
-      	),
-      ),
-      'orderby' => 'meta_value',
-      'meta_key' => 'date',
-      'order' => 'ASC',
-    ) );
+		// Is this for a specific event?
+		$today = date('Ymd');
+		if ($bookable_event_id): // yes
+	    $bookables_loop = new WP_Query( array(
+	      'post_type' => 'bookable',
+	      'p' => $bookable_event_id,
+				'meta_query' => array(
+	      	array(
+	      	  'key'     => 'date',
+	      	  'compare' => '>=',
+	      	  'value'   => $today,
+	      	  'type'    => 'DATE'
+	      	),
+	      ),
+	    ) );
+		// Is this for a specific event?
+		else: // no
+			// Load nearest bookable event
+	    $bookables_loop = new WP_Query( array(
+	      'post_type' => 'bookable',
+	      'posts_per_page' => 1,
+	      'meta_query' => array(
+	      	array(
+	      	  'key'     => 'date',
+	      	  'compare' => '>=',
+	      	  'value'   => $today,
+	      	  'type'    => 'DATE'
+	      	),
+	      ),
+	      'orderby' => 'meta_value',
+	      'meta_key' => 'date',
+	      'order' => 'ASC',
+	    ) );
+		endif;
     if ($bookables_loop->have_posts()) : while($bookables_loop->have_posts()) :
       $bookables_loop->the_post();
 
@@ -121,23 +141,28 @@ class BookID_Renderer {
         $timeslots[$slot]['available']--;
         if (get_sub_field('member') == $user_ID) $registered = $slot;
 				$guests = esc_html(get_sub_field('guests'));
+				if (!empty($guests)) $guests = 'with ' . $guests;
       endwhile; endif;
 
       if ($registered) {
 				// If the user already has a booking, render a cancel button
-        $content .= "<p>You’ve booked a table for $registered with $guests. See you then, make sure you’re on time!</p>";
+        $content .= "<p>You’ve booked the $registered timeslot$guests. See you then, make sure you’re on time!</p>";
         $content .= $this->build_button('cancel-booking', 'Cancel booking', array(
           'post' => get_the_ID(),
-          'timeslot' => $slot['begin_time'],
+          'timeslot' => $slot,
         ) );
       } else {
 				// If the user doesn’t have a booking, allow them to get a spot
 				$content .= "<style>$this->styling</style>";
 				$content .= "<form action='#' id='bookid-form'>";
-				$content .= "<p><label for='guests' class='login__label'>
-					Who are you bringing? (2 names)</label>";
-				$content .= "<input name='guests' id='guests' type='text'
-					placeholder='Jamie & Sam' class='login__input' required></p>";
+
+				// Is this for a Kafee?
+				if (strpos( strtolower($title), 'kafee' )): // yes, so ask who they’re brining
+					$content .= "<p><label for='guests' class='login__label'>
+						Who are you bringing? (2 names)</label>";
+					$content .= "<input name='guests' id='guests' type='text'
+						placeholder='Jamie & Sam' class='login__input' required></p>";
+				endif;
 
         $content .= "<div class='timeslots'>";
         foreach ($timeslots as $key => $slot) {
@@ -145,7 +170,7 @@ class BookID_Renderer {
 					if ($slot['available'] < 1) {
 						$content .= $slot['begin'] . '–' . $slot['end'] . ' is fully booked.';
 					} else {
-						$button_text = 'Book a table for ' . $slot['begin'] . '–' . $slot['end'];
+						$button_text = 'Book timeslot ' . $slot['begin'] . '–' . $slot['end'];
 	          $content .= $this->build_button('add-booking', $button_text, array(
 	            'post' => get_the_ID(),
 	            'timeslot' => $slot['begin'],
@@ -159,7 +184,7 @@ class BookID_Renderer {
 
     endwhile; else:
 			// Handle a lack of upcoming events
-      $content .= "<p>There are no upcoming Kafees you can book a table for. $this->post_type</p>";
+      $content .= "<p>There are no upcoming events you can book a timeslot for. $this->post_type</p>";
     endif;
 
     wp_reset_query();

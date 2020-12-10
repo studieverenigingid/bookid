@@ -18,14 +18,22 @@ function sendXhr(params) {
  */
 function addBooking(event) {
   event.preventDefault();
-  if (document.getElementById('guests').checkValidity()) {
-    let params = "?action=bookid_add" +
-      "&post=" + event.target.dataset.post +
-      "&timeslot=" + event.target.dataset.timeslot +
-      "&guests=" + document.getElementById('guests').value;
+  let params = "?action=bookid_add" +
+    "&post=" + event.target.dataset.post +
+    "&timeslot=" + event.target.dataset.timeslot;
+
+  let allGood = true;
+  if (document.getElementById('guests') !== null) {
+    if (!document.getElementById('guests').checkValidity()) {
+      alert("Please let us know who’s joining you!");
+      allGood = false;
+    } else {
+      params += "&guests=" + document.getElementById('guests').value;
+    }
+  }
+
+  if (allGood) {
     sendXhr(params);
-  } else {
-    alert("Please let us know who’s joining you!");
   }
 }
 
@@ -51,6 +59,9 @@ function handleLoadend(e) {
       case 'consecutive':
         error = "To make sure as many people as possible are able to visit ID Kafee, you can’t book two consecutive weeks. Sorry!";
         break;
+      case 'full':
+        error = "We’re terribly sorry, but someone stole the last spots right before you. Try another timeslot or reload the page.";
+        break;
       default:
         console.log('unknown error');
     }
@@ -71,7 +82,7 @@ function handleError(e) {
  */
 function showError(message) {
   let errorEl = document.createElement('div');
-  errorEl.classList.add('contact-form__message', 'contact-form__message--failed');
+  errorEl.classList.add('notification', 'notification--failed');
   errorEl.innerHTML = message;
   document.getElementById('bookid-form').appendChild(errorEl);
 }
