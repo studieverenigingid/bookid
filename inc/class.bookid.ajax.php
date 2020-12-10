@@ -31,7 +31,7 @@ class BookID_Ajax {
 
 	/**
 	 * Check if the user also booked the last time
-	 * @param
+	 * @return bool
 	 */
 	private function is_consecutive() {
 		$today = date('Ymd');
@@ -62,6 +62,33 @@ class BookID_Ajax {
 	}
 
 	/**
+	 * Check if the timeslot is fully booked
+	 * @return bool
+	 */
+	private function is_full() {
+		$post_ID = $_GET['post'];
+    $bookables_loop = new WP_Query( array(
+      'post_type' => 'bookable',
+      'p' => $post_ID,
+    ) );
+		if ($bookables_loop->have_posts()) : while($bookables_loop->have_posts()) :
+			$bookables_loop->the_post();
+			if ( have_rows('timeslots') ): while ( have_rows('timeslots') ): the_row();
+				if (get_sub_field('begin_time') == $_GET['timeslot']):
+					$capacity = (int)get_sub_field('capacity');
+				endif;
+			endwhile; endif;
+			if ( have_rows('bookings') ): while ( have_rows('bookings') ): the_row();
+				if (get_sub_field('timeslot') == $_GET['timeslot']) {
+        	$capacity--;
+				}
+			endwhile; endif;
+		endwhile; endif;
+
+		return ($capacity <= 0);
+	}
+
+	/**
 	 * Save a booking
 	 * @return bool $adding
 	 */
@@ -89,6 +116,11 @@ class BookID_Ajax {
 			$response = array(
 				'success' => false,
 				'problem' => 'consecutive',
+			);
+		} elseif ($this->is_full()) {
+			$response = array(
+				'success' => false,
+				'problem' => 'full',
 			);
 		} else {
 			$response = array(

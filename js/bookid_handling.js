@@ -59,6 +59,9 @@ function handleLoadend(e) {
       case 'consecutive':
         error = "To make sure as many people as possible are able to visit ID Kafee, you can’t book two consecutive weeks. Sorry!";
         break;
+      case 'full':
+        error = "We’re terribly sorry, but someone stole the last spots right before you. Try another timeslot or reload the page.";
+        break;
       default:
         console.log('unknown error');
     }
