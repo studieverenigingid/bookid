@@ -19,4 +19,4 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         port: ${{ secrets.PORT }}
         source: "."
-        target: "${{ secrets.REMOTE_DIR_MAIN }}"
+        target: "${{ secrets.REMOTE_DIR_MAIN }}plugins/bookid"
