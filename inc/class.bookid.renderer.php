@@ -139,14 +139,16 @@ class BookID_Renderer {
       if ( have_rows('bookings') ): while ( have_rows('bookings') ): the_row();
         $slot = get_sub_field('timeslot');
         $timeslots[$slot]['available']--;
-        if (get_sub_field('member') == $user_ID) $registered = $slot;
-				$guests = esc_html(get_sub_field('guests'));
-				if (!empty($guests)) $guests = 'with ' . $guests;
+        if (get_sub_field('member') == $user_ID) {
+					$registered = $slot;
+					$guests = esc_html(get_sub_field('guests'));
+					if (!empty($guests)) $guests = 'with ' . $guests;
+				}
       endwhile; endif;
 
       if ($registered) {
 				// If the user already has a booking, render a cancel button
-        $content .= "<p>You’ve booked the $registered timeslot$guests. See you then, make sure you’re on time!</p>";
+        $content .= "<p>You’ve booked the $registered timeslot $guests. See you then, make sure you’re on time!</p>";
         $content .= $this->build_button('cancel-booking', 'Cancel booking', array(
           'post' => get_the_ID(),
           'timeslot' => $slot,
