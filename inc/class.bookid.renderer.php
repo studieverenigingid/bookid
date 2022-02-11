@@ -161,7 +161,7 @@ class BookID_Renderer {
 					$content .= "<p><label for='guests' class='login__label'>
 						Who are you bringing? (4 names)</label>";
 					$content .= "<input name='guests' id='guests' type='text'
-						placeholder='Jamie, Lisa, Laura & Sam' class='login__input' required></p>";
+						placeholder='Jamie, Jip, Noa & Sam' class='login__input' required></p>";
 				endif;
 
         $content .= "<div class='timeslots'>";
