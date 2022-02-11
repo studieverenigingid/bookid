@@ -49,7 +49,7 @@ class BookID_Ajax {
       ),
       'orderby' => 'meta_value',
       'meta_key' => 'date',
-      'order' => 'ASC',
+      'order' => 'DESC',
     ) );
 		if ($bookables_loop->have_posts()) : while($bookables_loop->have_posts()) :
 			$bookables_loop->the_post();
